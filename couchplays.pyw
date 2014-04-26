@@ -1,7 +1,7 @@
 import pygame
 from pygbutton import PygButton
-from stick import Stick,BigStick
-from stickface import *
+from bigstick import BigStick
+from Tkinter import Tk
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -11,16 +11,18 @@ MAXFPS = 60
 
 pygame.init()
 
-outStick = BigStick(SNESBigStickFace(),(30,30))
+outStick = BigStick('SNES.zip',(30,30))
 numLoadedSticks = min([pygame.joystick.get_count(),MAXSTICKS])
 for i in range(numLoadedSticks):
     x = 20 + i%COLUMNS * 140
     y = 220 + i/COLUMNS * 100
-    outStick.addSubStick(Stick(SNESStickFace(),i,(x,y)))
+    tempJoystick = pygame.joystick.Joystick(i)
+    outStick.addSubStick(tempJoystick,(x,y))
 
 ROWS = (len(outStick.subSticks)-1)/2
 
-screen = pygame.display.set_mode((20 + COLUMNS*140, 385 + 100*ROWS))
+Tk().withdraw() #suppress Tkinter window
+screen = pygame.display.set_mode((20 + COLUMNS*140, 25 + 385 + 100*ROWS))
 pygame.display.set_caption('Couch Plays')
 
 fpsClock = pygame.time.Clock()
@@ -30,6 +32,7 @@ consolas = pygame.font.SysFont('Consolas',12)
 downButton = PygButton((160,340 + 100*ROWS,20,20),'-',)
 upButton = PygButton((160,315 + 100*ROWS,20,20),'+')
 toggleStartButton = PygButton((20,315 + 100*ROWS,120,20),'Start ENABLED')
+stickfaceButton = PygButton((20,370 + 100*ROWS,120,20),'New stickface')
 
 
 done = False
@@ -50,12 +53,15 @@ while not(done):
                 toggleStartButton.caption = "Start DISABLED"
             else:
                 toggleStartButton.caption = "Start ENABLED"
+        if 'click' in stickfaceButton.handleEvent(event):
+            outStick.getNewStickface()
 
 
     screen.fill(BLACK)
     upButton.draw(screen)
     toggleStartButton.draw(screen)
     downButton.draw(screen)
+    stickfaceButton.draw(screen)
     for stick in outStick.subSticks:
         stick.update()
         stick.draw(screen)
