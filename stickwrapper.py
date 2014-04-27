@@ -4,8 +4,10 @@ class StickWrapper(object):
         self.realStick.init()
         if realStick.get_name() == 'Twin USB Joystick':
             self.conversion = [2,1,3,0,6,7,8,9]
-        if "XBOX 360" in realStick.get_name():
+        elif "XBOX 360" in realStick.get_name() or "Xbox 360" in realStick.get_name:
             self.conversion = [0,1,2,3,4,5,6,7]
+        else:
+            self.conversion = []
 
     def getAllButtons(self):
         return [self.realStick.get_button(b) for b in self.conversion]
