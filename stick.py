@@ -1,5 +1,8 @@
 import pygame
-from cStringIO import StringIO
+try:  # Python 2.X support
+    from cStringIO import StringIO
+except ImportError:  # Python 3.X support
+    from io import BytesIO as StringIO
 from yaml import load as yamlLoad
 from zipfile import ZipFile
 

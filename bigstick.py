@@ -1,10 +1,11 @@
 import pygame
 from ctypes import windll
-from yaml import load as yamlLoad
 from substick import SubStick
 from stick import Stick
-from cStringIO import StringIO
-from tkFileDialog import askopenfilename
+try:  # Python 2.X support
+    from tkFileDialog import askopenfilename
+except ImportError:  # Python 3.0+ support
+    from tkinter.filedialog import askopenfilename
 
 WHITE = (255,255,255)
 

@@ -1,7 +1,10 @@
 import pygame
 from pygbutton import PygButton
 from bigstick import BigStick
-from Tkinter import Tk
+try:  # Python 2.x support
+    from Tkinter import Tk
+except ImportError:  # Python 3.X support
+    from tkinter import Tk
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -19,7 +22,7 @@ for i in range(numLoadedSticks):
     tempJoystick = pygame.joystick.Joystick(i)
     outStick.addSubStick(tempJoystick,(x,y))
 
-ROWS = (len(outStick.subSticks)-1)/2
+ROWS = int((len(outStick.subSticks)-1)/2)
 
 Tk().withdraw() #suppress Tkinter window
 screen = pygame.display.set_mode((20 + COLUMNS*140, 25 + 385 + 100*ROWS))
